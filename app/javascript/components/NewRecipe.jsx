@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios';
 
 class NewRecipe extends React.Component {
   constructor(props) {
@@ -37,18 +38,18 @@ class NewRecipe extends React.Component {
       instruction: instruction.replace(/\n/g, "<br> <br>")
     };
 
-    const token = document.querySelector('meta[name="csrf-token"]').content;
-    fetch(url, {
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+    axios(url, {
       method: "POST",
       headers: {
         "X-CSRF-Token": token,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(body)
+      data: JSON.stringify(body)
     })
       .then(response => {
-        if (response.ok) {
-          return response.json();
+        if (response.statusText === "OK") {
+          return response.data;
         }
         throw new Error("Network response was not ok.");
       })

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import axios from "axios"
 
 class Recipes extends React.Component {
   constructor(props) {
@@ -12,10 +13,10 @@ class Recipes extends React.Component {
 
   componentDidMount() {
     const url = "/api/v1/recipes/index";
-    fetch(url)
+    axios.get(url)
       .then(response => {
-        if (response.ok) {
-          return response.json();
+        if (response.statusText === "OK") {
+          return response.data
         }
         throw new Error("Network response was not ok.");
       })

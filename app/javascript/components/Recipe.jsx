@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import axios from "axios";
 
 class Recipe extends React.Component {
   constructor(props) {
@@ -19,10 +20,10 @@ class Recipe extends React.Component {
 
     const url = `/api/v1/show/${id}`;
 
-    fetch(url)
+    axios.get(url)
       .then(response => {
-        if (response.ok) {
-          return response.json();
+        if (response.statusText === "OK") {
+          return response.data
         }
         throw new Error("Network response was not ok.");
       })
@@ -47,7 +48,7 @@ class Recipe extends React.Component {
     const url = `/api/v1/destroy/${id}`;
     const token = document.querySelector("meta[name='csrf-token']").content;
 
-    fetch(url, {
+    axios(url, {
       method: "DELETE",
       headers: {
         "X-CSRF-Token": token,
@@ -55,8 +56,8 @@ class Recipe extends React.Component {
       }
     })
       .then(response => {
-        if (response.ok) {
-          return response.json();
+        if (response.statusText === "OK") {
+          return response.data;
         }
         throw new Error("Network response was not ok.");
       })
